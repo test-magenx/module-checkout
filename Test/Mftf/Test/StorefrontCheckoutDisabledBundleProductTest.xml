@@ -39,7 +39,9 @@
             <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindex">
                 <argument name="indices" value=""/>
             </actionGroup>
-            <comment userInput="Adding the comment to replace CliCacheFlushActionGroup action group ('cache:flush' command) for preserving Backward Compatibility" stepKey="flushCache"/>
+            <actionGroup ref="CliCacheFlushActionGroup" stepKey="flushCache">
+                <argument name="tags" value=""/>
+            </actionGroup>
         </before>
         <after>
             <!-- Delete category -->
@@ -57,7 +59,7 @@
         <amOnPage url="{{StorefrontProductPage.url($$createBundleDynamicProduct.custom_attributes[url_key]$$)}}" stepKey="navigateToProductPage"/>
         <waitForPageLoad stepKey="waitForPageLoad"/>
         <!-- Add bundle product to the cart -->
-        <actionGroup ref="StorefrontSelectCustomizeAndAddToTheCartButtonActionGroup" stepKey="clickCustomizeAndAddToCart"/>
+        <click selector="{{StorefrontBundleProductActionSection.customizeAndAddToCartButton}}" stepKey="clickCustomizeAndAddToCart"/>
         <actionGroup ref="AddToCartFromStorefrontProductPageActionGroup" stepKey="addProductToCart">
             <argument name="productName" value="$$createBundleDynamicProduct.name$$"/>
         </actionGroup>

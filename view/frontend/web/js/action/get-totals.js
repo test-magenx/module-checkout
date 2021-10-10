@@ -38,7 +38,7 @@ define([
                 quote.setTotals(response);
                 deferred.resolve();
             }
-        }).fail(function (response) {
+        }).error(function (response) {
             totals.isLoading(false);
             deferred.reject();
             errorProcessor.process(response);

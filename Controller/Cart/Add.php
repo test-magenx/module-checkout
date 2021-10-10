@@ -6,11 +6,9 @@
  */
 namespace Magento\Checkout\Controller\Cart;
 
-use Magento\Checkout\Model\Cart\RequestQuantityProcessor;
 use Magento\Framework\App\Action\HttpPostActionInterface as HttpPostActionInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Checkout\Model\Cart as CustomerCart;
-use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -28,11 +26,6 @@ class Add extends \Magento\Checkout\Controller\Cart implements HttpPostActionInt
     protected $productRepository;
 
     /**
-     * @var RequestQuantityProcessor
-     */
-    private $quantityProcessor;
-
-    /**
      * @param \Magento\Framework\App\Action\Context $context
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param \Magento\Checkout\Model\Session $checkoutSession
@@ -40,7 +33,6 @@ class Add extends \Magento\Checkout\Controller\Cart implements HttpPostActionInt
      * @param \Magento\Framework\Data\Form\FormKey\Validator $formKeyValidator
      * @param CustomerCart $cart
      * @param ProductRepositoryInterface $productRepository
-     * @param RequestQuantityProcessor|null $quantityProcessor
      * @codeCoverageIgnore
      */
     public function __construct(
@@ -50,8 +42,7 @@ class Add extends \Magento\Checkout\Controller\Cart implements HttpPostActionInt
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Framework\Data\Form\FormKey\Validator $formKeyValidator,
         CustomerCart $cart,
-        ProductRepositoryInterface $productRepository,
-        ?RequestQuantityProcessor $quantityProcessor = null
+        ProductRepositoryInterface $productRepository
     ) {
         parent::__construct(
             $context,
@@ -62,8 +53,6 @@ class Add extends \Magento\Checkout\Controller\Cart implements HttpPostActionInt
             $cart
         );
         $this->productRepository = $productRepository;
-        $this->quantityProcessor = $quantityProcessor
-            ?? ObjectManager::getInstance()->get(RequestQuantityProcessor::class);
     }
 
     /**
@@ -110,7 +99,6 @@ class Add extends \Magento\Checkout\Controller\Cart implements HttpPostActionInt
                         \Magento\Framework\Locale\ResolverInterface::class
                     )->getLocale()]
                 );
-                $params['qty'] = $this->quantityProcessor->prepareQuantity($params['qty']);
                 $params['qty'] = $filter->filter($params['qty']);
             }
 

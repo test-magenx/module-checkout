@@ -161,13 +161,9 @@ define([
                 return valid;
             }
 
-            if (loginForm.is(':visible')) {
-                validator = loginForm.validate();
+            validator = loginForm.validate();
 
-                return validator.check(usernameSelector);
-            }
-
-            return true;
+            return validator.check(usernameSelector);
         },
 
         /**

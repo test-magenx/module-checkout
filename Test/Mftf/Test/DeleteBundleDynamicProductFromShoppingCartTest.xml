@@ -56,7 +56,7 @@
         <waitForPageLoad stepKey="waitForPageLoad"/>
 
         <!-- Add product to the cart -->
-        <actionGroup ref="StorefrontSelectCustomizeAndAddToTheCartButtonActionGroup" stepKey="clickCustomizeAndAddToCart"/>
+        <click selector="{{StorefrontBundleProductActionSection.customizeAndAddToCartButton}}" stepKey="clickCustomizeAndAddToCart"/>
         <actionGroup ref="AddToCartFromStorefrontProductPageActionGroup" stepKey="addProductToCart">
             <argument name="productName" value="$$createBundleDynamicProduct.name$$"/>
         </actionGroup>

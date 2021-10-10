@@ -43,7 +43,9 @@
                 <requiredEntity createDataKey="product"/>
                 <requiredEntity createDataKey="simple3"/>
             </updateData>
-            <comment userInput="Adding the comment to replace CliCacheFlushActionGroup action group ('cache:flush' command) for preserving Backward Compatibility" stepKey="flushCache"/>
+            <actionGroup ref="CliCacheFlushActionGroup" stepKey="flushCache">
+                <argument name="tags" value=""/>
+            </actionGroup>
         </before>
         <after>
             <deleteData createDataKey="simple1" stepKey="deleteProduct1"/>
