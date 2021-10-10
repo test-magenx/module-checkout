@@ -99,12 +99,12 @@ define([
                 customAttributesObject;
 
             $.each(addrs, function (key) {
-                if (addrs.hasOwnProperty(key) && typeof addrs[key] !== 'function') {
+                if (addrs.hasOwnProperty(key) && !$.isFunction(addrs[key])) {
                     output[self.toUnderscore(key)] = addrs[key];
                 }
             });
 
-            if (Array.isArray(addrs.street)) {
+            if ($.isArray(addrs.street)) {
                 streetObject = {};
                 addrs.street.forEach(function (value, index) {
                     streetObject[index] = value;
@@ -113,7 +113,7 @@ define([
             }
 
             //jscs:disable requireCamelCaseOrUpperCaseIdentifiers
-            if (Array.isArray(addrs.customAttributes)) {
+            if ($.isArray(addrs.customAttributes)) {
                 customAttributesObject = {};
                 addrs.customAttributes.forEach(function (value) {
                     customAttributesObject[value.attribute_code] = value.value;

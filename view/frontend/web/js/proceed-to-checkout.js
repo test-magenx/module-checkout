@@ -11,7 +11,7 @@ define([
     'use strict';
 
     return function (config, element) {
-        $(element).on('click', function (event) {
+        $(element).click(function (event) {
             var cart = customerData.get('cart'),
                 customer = customerData.get('customer');
 

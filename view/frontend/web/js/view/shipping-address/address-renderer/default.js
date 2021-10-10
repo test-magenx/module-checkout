@@ -69,8 +69,6 @@ define([
                 label = _.map(attribute.value, function (value) {
                     return this.getCustomAttributeOptionLabel(attribute['attribute_code'], value) || value;
                 }, this).join(', ');
-            } else if (typeof attribute.value === 'object') {
-                label = _.map(Object.values(attribute.value)).join(', ');
             } else {
                 label = this.getCustomAttributeOptionLabel(attribute['attribute_code'], attribute.value);
             }
@@ -98,8 +96,6 @@ define([
                 if (option) {
                     label = option.label;
                 }
-            } else if (value.file !== null) {
-                label = value.file;
             }
 
             return label;

@@ -15,23 +15,15 @@ use PHPUnit\Framework\TestCase;
 
 class SuccessValidatorTest extends TestCase
 {
-    /**
-     * @var ObjectManagerHelper
-     */
+    /** @var ObjectManagerHelper */
     protected $objectManagerHelper;
 
-    /**
-     * @inheritDoc
-     */
     protected function setUp(): void
     {
         $this->objectManagerHelper = new ObjectManagerHelper($this);
     }
 
-    /**
-    * @return void
-    */
-    public function testIsValid(): void
+    public function testIsValid()
     {
         $checkoutSession = $this->getMockBuilder(
             Session::class
@@ -40,66 +32,79 @@ class SuccessValidatorTest extends TestCase
         $this->assertFalse($this->createSuccessValidator($checkoutSession)->isValid($checkoutSession));
     }
 
-    /**
-    * @return void
-    */
-    public function testIsValidWithNotEmptyGetLastSuccessQuoteId(): void
+    public function testIsValidWithNotEmptyGetLastSuccessQuoteId()
     {
         $checkoutSession = $this->getMockBuilder(
             Session::class
         )->disableOriginalConstructor()
             ->getMock();
 
-        $checkoutSession
-            ->method('__call')
-            ->withConsecutive(['getLastSuccessQuoteId'], ['getLastQuoteId'])
-            ->willReturnOnConsecutiveCalls(1, 0);
+        $checkoutSession->expects(
+            $this->at(0)
+        )->method(
+            '__call'
+        )->with(
+            'getLastSuccessQuoteId'
+        )->willReturn(
+            1
+        );
+
+        $checkoutSession->expects($this->at(1))->method('__call')->with('getLastQuoteId')->willReturn(0);
 
         $this->assertFalse($this->createSuccessValidator($checkoutSession)->isValid($checkoutSession));
     }
 
-    /**
-    * @return void
-    */
-    public function testIsValidWithEmptyQuoteAndOrder(): void
+    public function testIsValidWithEmptyQuoteAndOrder()
     {
         $checkoutSession = $this->getMockBuilder(
             Session::class
         )->disableOriginalConstructor()
             ->getMock();
+        $checkoutSession->expects(
+            $this->at(0)
+        )->method(
+            '__call'
+        )->with(
+            'getLastSuccessQuoteId'
+        )->willReturn(
+            1
+        );
 
-        $checkoutSession
-            ->method('__call')
-            ->withConsecutive(['getLastSuccessQuoteId'], ['getLastQuoteId'], ['getLastOrderId'])
-            ->willReturnOnConsecutiveCalls(1, 1, 0);
+        $checkoutSession->expects($this->at(1))->method('__call')->with('getLastQuoteId')->willReturn(1);
+
+        $checkoutSession->expects($this->at(2))->method('__call')->with('getLastOrderId')->willReturn(0);
 
         $this->assertFalse($this->createSuccessValidator($checkoutSession)->isValid($checkoutSession));
     }
 
-    /**
-    * @return void
-    */
-    public function testIsValidTrue(): void
+    public function testIsValidTrue()
     {
         $checkoutSession = $this->getMockBuilder(
             Session::class
         )->disableOriginalConstructor()
             ->getMock();
+        $checkoutSession->expects(
+            $this->at(0)
+        )->method(
+            '__call'
+        )->with(
+            'getLastSuccessQuoteId'
+        )->willReturn(
+            1
+        );
 
-        $checkoutSession
-            ->method('__call')
-            ->withConsecutive(['getLastSuccessQuoteId'], ['getLastQuoteId'], ['getLastOrderId'])
-            ->willReturnOnConsecutiveCalls(1, 1, 1);
+        $checkoutSession->expects($this->at(1))->method('__call')->with('getLastQuoteId')->willReturn(1);
+
+        $checkoutSession->expects($this->at(2))->method('__call')->with('getLastOrderId')->willReturn(1);
 
         $this->assertTrue($this->createSuccessValidator($checkoutSession)->isValid($checkoutSession));
     }
 
     /**
      * @param MockObject $checkoutSession
-     *
      * @return object
      */
-    protected function createSuccessValidator(MockObject $checkoutSession): object
+    protected function createSuccessValidator(MockObject $checkoutSession)
     {
         return $this->objectManagerHelper->getObject(
             SuccessValidator::class,

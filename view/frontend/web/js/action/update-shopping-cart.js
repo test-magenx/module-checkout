@@ -107,29 +107,9 @@ define([
          * Form validation failed.
          */
         onError: function (response) {
-            var that = this,
-                elm,
-                responseData = JSON.parse(response['error_message']);
-
             if (response['error_message']) {
-                try {
-                    $.each(responseData, function (index, data) {
-
-                        if (data.itemId !== undefined) {
-                            elm = $('#cart-' + data.itemId + '-qty');
-                            elm.val(elm.attr('data-item-qty'));
-                        }
-                        response['error_message'] = data.error;
-                    });
-                } catch (e) {}
                 alert({
-                    content: response['error_message'],
-                    actions: {
-                        /** @inheritdoc */
-                        always: function () {
-                            that.submitForm();
-                        }
-                    }
+                    content: response['error_message']
                 });
             } else {
                 this.submitForm();

@@ -78,9 +78,6 @@ class ConfigureTest extends TestCase
      */
     protected $cartMock;
 
-    /**
-     * @inheritDoc
-     */
     protected function setUp(): void
     {
         $this->contextMock = $this->createMock(Context::class);
@@ -122,11 +119,11 @@ class ConfigureTest extends TestCase
     }
 
     /**
-     * Test checks controller call product view and send parameter to it.
+     * Test checks controller call product view and send parameter to it
      *
      * @return void
      */
-    public function testPrepareAndRenderCall(): void
+    public function testPrepareAndRenderCall()
     {
         $quoteId = 1;
         $actualProductId = 1;
@@ -149,10 +146,14 @@ class ConfigureTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
         //expects
-        $this->requestMock
+        $this->requestMock->expects($this->at(0))
             ->method('getParam')
-            ->withConsecutive(['id'], ['product_id'])
-            ->willReturnOnConsecutiveCalls($quoteId, $actualProductId);
+            ->with('id')
+            ->willReturn($quoteId);
+        $this->requestMock->expects($this->at(1))
+            ->method('getParam')
+            ->with('product_id')
+            ->willReturn($actualProductId);
         $this->cartMock->expects($this->any())->method('getQuote')->willReturn($quoteMock);
 
         $quoteItemMock->expects($this->exactly(1))->method('getBuyRequest')->willReturn($buyRequestMock);
@@ -161,7 +162,7 @@ class ConfigureTest extends TestCase
             ->method('create')
             ->with(ResultFactory::TYPE_PAGE, [])
             ->willReturn($pageMock);
-        $this->objectManagerMock
+        $this->objectManagerMock->expects($this->at(0))
             ->method('get')
             ->with(View::class)
             ->willReturn($viewMock);
@@ -187,11 +188,11 @@ class ConfigureTest extends TestCase
 
     /**
      * Test checks controller redirect user to cart
-     * if user request product id in cart edit page is not same as quota product id.
+     * if user request product id in cart edit page is not same as quota product id
      *
      * @return void
      */
-    public function testRedirectWithWrongProductId(): void
+    public function testRedirectWithWrongProductId()
     {
         $quotaId = 1;
         $productIdInQuota = 1;
